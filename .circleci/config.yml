@@ -60,5 +60,5 @@ workflows:
       - prod:
           type: approval
           requires:
-            - integratioin
+            - integration
       - artifact
