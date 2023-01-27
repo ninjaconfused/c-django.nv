@@ -34,6 +34,17 @@ jobs:
       - checkout
       - run: echo "This is a deploy step"
 
+  artifact:
+    working_directory: /tmp
+    steps:
+      - run:
+          name: Creating artifact
+          command: | 
+            echo "hello" > hello.txt
+       - store_artifacts:
+           path: /tmp/
+           destination: hello.txt
+
 workflows:
   version: 2
   django:
