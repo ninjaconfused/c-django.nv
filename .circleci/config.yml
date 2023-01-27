@@ -39,12 +39,12 @@ workflows:
   django:
     jobs:
       - build
-      - test
+      - test:
           requires:
             - build
-      - integration
+      - integration:
           requires:
             - test
-      - prod
+      - prod:
           requires:
             - integration
