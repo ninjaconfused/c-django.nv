@@ -35,17 +35,16 @@ jobs:
           command: |
             echo "This is an integration step"
             exit 1
-          when: always                    # Even if the job fails, continue to the next stages
 
   prod:
     docker:
       - image: python:3.6
     steps:
       - checkout
-      - run: echo "This is a deploy step."
-      - when: 
-          condition:
-            equal: [ main, << pipeline.git.branch >> ]
+      - run:
+          command: |
+            echo "This is a deploy step."
+          when: always
 
 workflows:
   version: 2
