@@ -23,7 +23,7 @@ jobs:
     steps:
       - checkout
       - run:
-          shell: /bin/bash
+          shell: /bin/sh
           command: |
             echo "This is an integration step"
             exit 1
