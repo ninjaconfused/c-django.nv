@@ -16,7 +16,16 @@ jobs:
       - run: |
           pip install -r requirements.txt
           python manage.py test taskManager
+  
 
+  release:
+    machine: true
+    steps:
+      - checkout
+      
+      - run: | 
+          docker build -t $DOCKER_USERNAME/django.nv .
+          docker push $DOCKER_USERNAME/django.nv
   integration:
     docker:
       - image: python:3.6
