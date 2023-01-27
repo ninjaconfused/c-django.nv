@@ -26,23 +26,14 @@ jobs:
           command: |
             echo "This is an integration step"
             exit 1
-          when: always # should always continue
+          when: always                    # Even if the job fails, continue to the next stages
 
   prod:
     docker:
       - image: python:3.6
     steps:
       - checkout
-      - run: echo "This is a deploy step"
-
-  artifact:
-    steps:
-     - run:
-         name: Creating artifact
-         command: | 
-           echo "hello" > hello.txt
-     - store_artifacts:
-         path: hello.txt
+      - run: echo "This is a deploy step."
 
 workflows:
   version: 2
@@ -51,7 +42,7 @@ workflows:
       - build
       - test:
           requires:
-            - build
+            - build 
       - integration:
           requires:
             - test
@@ -59,4 +50,3 @@ workflows:
           type: approval
           requires:
             - integration
-      - artifact
