@@ -16,6 +16,8 @@ jobs:
       - run: |
           pip install -r requirements.txt
           python manage.py test taskManager
+    requires:
+      - build
 
   integration:
     docker:
@@ -26,6 +28,8 @@ jobs:
           command: |
             echo "This is an integration step"
             exit 1
+    requires:
+      - test
 
   prod:
     docker:
@@ -33,6 +37,8 @@ jobs:
     steps:
       - checkout
       - run: echo "This is a deploy step"
+    requires:
+      - integration
 
 workflows:
   version: 2
