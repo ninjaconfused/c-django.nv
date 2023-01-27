@@ -43,6 +43,9 @@ jobs:
     steps:
       - checkout
       - run: echo "This is a deploy step."
+      - when: 
+          condition:
+            equal: [ main, << pipeline.git.branch >> ]
 
 workflows:
   version: 2
