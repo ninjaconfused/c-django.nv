@@ -35,7 +35,7 @@ jobs:
       - run:
           command: |
             echo "This is an integration step"
-            exit 1 || true
+            exit 1
           when: always
 
   prod:
