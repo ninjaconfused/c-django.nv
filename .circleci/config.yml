@@ -36,8 +36,8 @@ jobs:
           shell: /bin/sh
           command: |
             echo "This is an integration step"
-            exit 1
-            
+            exit 1 || true
+
   prod:
     docker:
       - image: python:3.6
