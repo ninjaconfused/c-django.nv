@@ -37,7 +37,6 @@ jobs:
           command: |
             set +e
             echo "This is an integration step"
-            exit 1
 
   prod:
     docker:
