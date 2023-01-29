@@ -37,17 +37,20 @@ jobs:
           command: |
             echo "This is an integration step"
             exit 1
+          when: always # Uploads code coverage results, pass or fail
 
   prod:
     docker:
       - image: python:3.6
     steps:
       - checkout
+      - when: 
+          condition:
+            equal: [ main, << pipeline.git.branch >> ]
       - run:
           command: |
             echo "This is a deploy step."
-          when: always
-
+            
 workflows:
   version: 2
   django:
