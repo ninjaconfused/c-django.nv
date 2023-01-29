@@ -33,10 +33,9 @@ jobs:
     steps:
       - checkout
       - run:
-          shell: /bin/sh
+          shell: /bin/bash
           command: |
             echo "This is an integration step"
-            exit 1 || true
 
   prod:
     docker:
@@ -49,6 +48,17 @@ jobs:
       - run:
           command: |
             echo "This is a deploy step."
+
+  artifact:
+    docker:
+      - image: python:3.6
+    working_directory: /tmp
+    steps: 
+      - run:
+          command: |
+            echo "hello world" > hello.txt
+      - store_artifacts:
+          path: hello.txt
 
 workflows:
   version: 2
@@ -69,3 +79,4 @@ workflows:
           type: approval
           requires:
             - integration
+      - artifact
