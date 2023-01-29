@@ -33,10 +33,10 @@ jobs:
     steps:
       - checkout
       - run:
+          shell: /bin/bash
           command: |
             echo "This is an integration step"
             exit 1
-          when: always
 
   prod:
     docker:
@@ -62,6 +62,7 @@ workflows:
       - integration:
           requires:
             - test
+            - release
       - prod:
           type: approval
           requires:
