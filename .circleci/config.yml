@@ -49,7 +49,7 @@ jobs:
           command: |
             echo "This is an integration step"
             exit 1
-        when: on_fail
+          when: on_fail
 
   prod:
     docker:
