@@ -21,9 +21,10 @@ jobs:
     machine: true
     steps:
       - checkout
+      
       - run: 
-        command: docker run -v $(pwd):/src --rm -v hysnsec/safety check -r requirements.txt --json | tee oast-results.json
-        when: on_fail
+          command: docker run -v $(pwd):/src --rm -v hysnsec/safety check -r requirements.txt --json | tee oast-results.json
+          when: on_fail
         
       - store_artifacts:
           path: oast-results.json
