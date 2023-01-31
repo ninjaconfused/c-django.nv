@@ -77,12 +77,14 @@ workflows:
       - test:
           requires:
             - build 
+      - oast:
+          requires:
+            - build 
       - release:
           requires:
-            - build
+            - oast
       - integration:
           requires:
-            - test
             - release
       - prod:
           type: approval
