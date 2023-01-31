@@ -22,9 +22,11 @@ jobs:
     steps:
       - checkout
       - run: docker run -v $(pwd):/src --rm -v hysnsec/safety check -r requirements.txt --json | tee oast-results.json
+        when: on_fail
       - store_artifacts:
           path: oast-results.json
           destination: safety-artifact
+          when: always
   
 
   release:
@@ -45,6 +47,7 @@ jobs:
           command: |
             echo "This is an integration step"
             exit 1
+        when: on_fail
 
   prod:
     docker:
@@ -57,17 +60,7 @@ jobs:
       - run:
           command: |
             echo "This is a deploy step."
-
-  artifact:
-    docker:
-      - image: python:3.6
-    working_directory: /tmp
-    steps: 
-      - run:
-          command: |
-            echo "hello world" > hello.txt
-      - store_artifacts:
-          path: hello.txt
+         
 
 workflows:
   version: 2
@@ -90,4 +83,3 @@ workflows:
           type: approval
           requires:
             - integration
-      - artifact
