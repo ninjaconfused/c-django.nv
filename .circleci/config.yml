@@ -32,11 +32,10 @@ jobs:
       - image: python:3.6
     steps:
       - checkout
-      - run:
-          shell: /bin/bash
+      - run: 
           command: |
-            set +e
             echo "This is an integration step"
+            exit 1
 
   prod:
     docker:
