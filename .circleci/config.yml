@@ -28,7 +28,7 @@ jobs:
         
       - store_artifacts:
           path: oast-results.json
-          destination: oast-artifact
+          destination: safety-artifact
           when: always
 
   oast_retire: 
@@ -42,7 +42,7 @@ jobs:
         
       - store_artifacts:
           path: retire-js-results.json
-          destination: oast-artifacts
+          destination: retire-artifact
           when: always
 
   release:
