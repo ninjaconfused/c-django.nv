@@ -17,7 +17,7 @@ jobs:
           pip install -r requirements.txt
           python manage.py test taskManager
    
-  oast: 
+  oast_safety: 
     machine: true
     steps:
       - checkout
@@ -28,7 +28,21 @@ jobs:
         
       - store_artifacts:
           path: oast-results.json
-          destination: safety-artifact
+          destination: oast-artifact
+          when: always
+
+  oast_retire: 
+    machine: true
+    steps:
+      - checkout
+      
+      - run: 
+          command: docker run -v $(pwd):/src --rm -v hysnsec/retire --outputformat json --outputpath retirejs-results.json --severity high
+          when: on_fail
+        
+      - store_artifacts:
+          path: retire-js-results.json
+          destination: oast-artifacts
           when: always
 
   release:
@@ -72,12 +86,17 @@ workflows:
       - test:
           requires:
             - build 
-      - oast:
+      - oast_safety:
+          requires:
+            - build 
+      - oast_retire:
           requires:
             - build 
       - release:
           requires:
-            - oast
+            - oast_safety
+            - oast_retire
+            - test
       - integration:
           requires:
             - release
