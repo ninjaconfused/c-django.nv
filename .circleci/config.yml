@@ -86,10 +86,10 @@ workflows:
       - test:
           requires:
             - build 
-      - oast_safety:
+      - oast:
           requires:
             - build 
-      - oast_retire:
+      - oast_frontend:
           requires:
             - build 
       - release:
