@@ -23,7 +23,7 @@ jobs:
       - checkout
       
       - run: 
-          command: docker run -v $(pwd):/src --rm -v hysnsec/safety check -r requirements.txt --json | tee oast-results.json
+          command: docker run -v $(pwd):/src -w /src hysnsec/safety check -r requirements.txt --json | tee oast-results.json
           when: on_fail
         
       - store_artifacts:
@@ -41,7 +41,7 @@ jobs:
           when: on_fail
         
       - store_artifacts:
-          path: retire-js-results.json
+          path: retirejs-results.json
           destination: retire-artifact
           when: always
 
