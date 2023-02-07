@@ -31,7 +31,7 @@ jobs:
           destination: safety-artifact
           when: always
 
-  oast-frontend:
+  oast_frontend:
     machine: true
     steps:
       - checkout
