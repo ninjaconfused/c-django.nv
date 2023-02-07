@@ -23,7 +23,7 @@ jobs:
       - checkout
       
       - run: 
-          command: docker run -v $(pwd):/src -w /src hysnsec/safety check -r requirements.txt --json | tee oast-results.json
+          command: docker run --rm -v $(pwd):/src hysnsec/safety check -r requirements.txt --json | tee oast-results.json
           when: on_fail
         
       - store_artifacts:
@@ -31,18 +31,18 @@ jobs:
           destination: safety-artifact
           when: always
 
-  oast_retire: 
+  oast-frontend:
     machine: true
     steps:
       - checkout
-      
+
       - run: 
-          command: docker run --rm -v $(pwd):/src -w /src hysnsec/retire --outputformat json --outputpath retirejs-results.json --severity high
+          command: docker run --rm -v $(pwd):/src -w /src hysnsec/retire --outputformat json --outputpath retirejs-output.json --severity high
           when: on_fail
-        
+
       - store_artifacts:
-          path: retirejs-results.json
-          destination: retire-artifact
+          path: retirejs-output.json
+          destination: retirejs-artifact
           when: always
 
   release:
@@ -95,7 +95,7 @@ workflows:
       - release:
           requires:
             - oast_safety
-            - oast_retire
+            - oast_frontend
             - test
       - integration:
           requires:
