@@ -16,67 +16,38 @@ jobs:
       - run: |
           pip install -r requirements.txt
           python manage.py test taskManager
-   
-  oast: 
-    machine: true
-    steps:
-      - checkout
-      
-      - run: 
-          command: docker run -v $(pwd):/src -w /src --rm hysnsec/safety check -r requirements.txt --json | tee oast-results.json
-          when: on_fail
-        
-      - store_artifacts:
-          path: oast-results.json
-          destination: safety-artifact
-          when: always
 
-  oast_frontend:
+  oast-frontend:
     machine: true
     steps:
       - checkout
 
-      - run: 
+      - run:
           command: docker run --rm -v $(pwd):/src -w /src hysnsec/retire --outputformat json --outputpath retirejs-output.json --severity high
-          when: on_fail
+          when: on_fail             # Even if the job fails, continue to the next stages
 
       - store_artifacts:
           path: retirejs-output.json
           destination: retirejs-artifact
           when: always
 
-  release:
-    machine: true
-    steps:
-      - checkout
-      - run: | 
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-          docker build -t $DOCKER_USERNAME/django.nv .
-          docker push $DOCKER_USERNAME/django.nv
-
   integration:
     docker:
       - image: python:3.6
     steps:
       - checkout
-      - run: 
+      - run:
           command: |
             echo "This is an integration step"
             exit 1
-          when: on_fail
+          when: on_fail         # Even if the job fails, continue to the next stages
 
   prod:
     docker:
       - image: python:3.6
     steps:
       - checkout
-      - when: 
-          condition:
-            equal: [ main, << pipeline.git.branch >> ]
-      - run:
-          command: |
-            echo "This is a deploy step."
-         
+      - run: echo "This is a deploy step."
 
 workflows:
   version: 2
@@ -85,21 +56,13 @@ workflows:
       - build
       - test:
           requires:
-            - build 
-      - oast:
+            - build
+      - oast-frontend:
           requires:
-            - build 
-      - oast_frontend:
-          requires:
-            - build 
-      - release:
-          requires:
-            - oast
-            - oast_frontend
             - test
       - integration:
           requires:
-            - release
+            - oast-frontend
       - prod:
           type: approval
           requires:
