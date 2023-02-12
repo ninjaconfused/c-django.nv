@@ -16,6 +16,17 @@ jobs:
       - run: |
           pip install -r requirements.txt
           python manage.py test taskManager
+  
+  odc-backend:
+    machine: true
+    steps: 
+      - checkout
+     
+      - run: chmod +x ./run-depcheck.sh && ./run-depcheck.sh
+      
+      - store_artifacts:
+        path: reports/dependency-check-report.csv
+        destination: depcheck-artifact
 
   oast-frontend:
     machine: true
@@ -57,6 +68,9 @@ workflows:
       - test:
           requires:
             - build
+      - odc-backend:
+          requires:
+            - test
       - oast-frontend:
           requires:
             - test
