@@ -79,16 +79,16 @@ jobs:
           when: always
           
    sast:
-    machine: true
-    steps:
-      - checkout 
-      
-      - run: docker run --rm -v $(pwd):/src hysnsec/bandit -r /src -f json -o /src/bandit-output.json
-      
-      - store_artifacts:
-          path: bandit-output.json
-          destination: bandit-artifact
-          when: always
+     machine: true
+     steps:
+       - checkout 
+
+       - run: docker run --rm -v $(pwd):/src hysnsec/bandit -r /src -f json -o /src/bandit-output.json
+
+       - store_artifacts:
+            path: bandit-output.json
+            destination: bandit-artifact
+            when: always
             
   integration:
     docker:
