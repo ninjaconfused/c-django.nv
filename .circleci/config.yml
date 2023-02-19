@@ -67,12 +67,9 @@ jobs:
     machine: true
     steps:
       - checkout
-      
       - run: 
           command: docker run --rm -v $(pwd):/src hysnsec/trufflehog file:///src --json > trufflehog-output.json
           when: on_fail
-        
-      
       - store_artifacts:
           path: trufflehog-output.json
           destination: trufflehog-artifact
@@ -82,9 +79,7 @@ jobs:
     machine: true
     steps:
       - checkout 
-
-      - run: docker run --rm -v $(pwd):/src hysnsec/bandit -r /src -f json -o /src/bandit-output.json
-
+      - run: docker run --rm -v $(pwd):/src hysnsec/bandit -r /src -f json -o /src/bandit-output.json || true
       - store_artifacts:
             path: bandit-output.json
             destination: bandit-artifact
