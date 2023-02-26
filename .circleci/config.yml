@@ -137,7 +137,7 @@ workflows:
       - secret_scanning:
           requires:
             - test
-      - zap-scan:
+      - zap-baseline:
           requires:
             - odc-backend
             - oast-frontend
@@ -145,7 +145,7 @@ workflows:
             - secret_scanning
       - integration:
           requires:
-            - zap-scan
+            - zap-baseline
       - prod:
           type: approval
           requires:
