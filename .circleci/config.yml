@@ -92,7 +92,7 @@ jobs:
       - run: | 
           docker pull owasp/zap2docker-stable:2.10.0
           docker run --user root --rm -v $(pwd):/zap/wrk:rw -w /zap owasp/zap2docker-stable:2.10.0 zap-baseline.py -t ${PROD_URL} -J zap-output.json
-      - store_artifact:
+      - store_artifacts:
           path: zap-output.json
           destination: zap-artifact
           
